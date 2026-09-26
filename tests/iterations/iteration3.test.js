@@ -11,7 +11,7 @@ describe("Given a user exists and a JWT token is issued", () => {
 
   beforeAll(async () => {
     // Connect to the test database before running any tests
-    await mongoose.connect("mongodb://localhost:27017/test-db", {
+    await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });

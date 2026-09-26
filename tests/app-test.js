@@ -1,15 +1,17 @@
 require("dotenv").config();
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+
 const todoTaskRouter = require("../routers/todoTaskRouter");
 const userRouter = require("../routers/userRouter");
 const tourRouter = require("../routers/tourRouter");
+
 const {
   unknownEndpoint,
   errorHandler,
 } = require("../middleware/customMiddleware");
-
 
 // express app
 const app = express();
@@ -26,9 +28,8 @@ app.use("/api/tours", tourRouter);
 app.use(unknownEndpoint);
 app.use(errorHandler);
 
-
 mongoose
-  .connect("mongodb://localhost:27017/test-db")
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("connected to db");
   })
@@ -37,4 +38,3 @@ mongoose
   });
 
 module.exports = app;
-
