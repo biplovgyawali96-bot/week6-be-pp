@@ -10,7 +10,7 @@ describe('Given the application has full authentication and user expansion', () 
 
   beforeAll(async () => {
     // Connect to test database before running any tests
-    await mongoose.connect("mongodb://localhost:27017/test-db", {
+    await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });

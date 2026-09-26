@@ -2,6 +2,8 @@ const User = require("../models/userModel");
 
 const jwt = require("jsonwebtoken");
 
+const validator = require("validator");
+
 // Generate JWT
 const generateToken = (_id) => {
   return jwt.sign({ _id }, process.env.SECRET, {
@@ -24,6 +26,14 @@ const signupUser = async (req, res) => {
   } = req.body;
 
   try {
+    if (!validator.isEmail(email)) {
+      throw Error("Email not valid");
+    }
+
+    if (!validator.isStrongPassword(password)) {
+      throw Error("Password not strong enough");
+    }
+
     const user = await User.signup(
       name,
       email,
@@ -37,7 +47,10 @@ const signupUser = async (req, res) => {
     // create a token
     const token = generateToken(user._id);
 
-    res.status(201).json({ email, token });
+    res.status(201).json({
+      user,
+      token,
+    });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
